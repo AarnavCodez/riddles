@@ -15,7 +15,7 @@ if start == 'play':
         def check_answer(self, guess):
             return self.answer.lower() == guess.lower()
 
-
+#hello this is a game
     class RiddleGame:
         def __init__(self, riddle_file):
             self.riddles = self.load_riddles(riddle_file)
