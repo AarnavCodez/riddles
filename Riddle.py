@@ -1,3 +1,6 @@
+import re
+
+
 class Riddle:
     def __init__(self, question, answer):
         self.question = question
