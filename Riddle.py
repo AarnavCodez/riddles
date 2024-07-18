@@ -7,4 +7,5 @@ class Riddle:
         self.answer = answer
 
     def check_answer(self, guess):
-        return self.answer.lower() == guess.lower()
+        a = re.compile(rf"{self.answer}")
+        return a.search(guess)
