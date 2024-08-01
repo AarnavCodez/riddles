@@ -12,21 +12,27 @@ class RiddleGame:
         self.riddles = self.load_riddles(riddle_file)
         self.score = 0
         self.results = []
+        self.question = 0
+        self.answer = ""
 
     def load_riddles(self, riddle_file):
+
         riddles = []
         with open(riddle_file, 'r') as file:
             lines = file.readlines()
             for line in lines:
                 if ':' in line:
-                    question, answer = line.split(':')
-                    riddles.append(Riddle.Riddle(question.strip(), answer.strip()))
+                    self.question, self.answer = line.split(':')
+                    riddles.append(Riddle.Riddle(self.question.strip(), str(self.answer.strip())))
+
         return riddles
+
+
 
     def play(self):
         print("Welcome to the Riddle Game!")
         for riddle in self.riddles:
-            print("\nRiddle:")
+            print("\nRiddle/Math:")
             print(riddle.question)
             guess = input("Your answer: ").strip()
             if riddle.check_answer(guess):
