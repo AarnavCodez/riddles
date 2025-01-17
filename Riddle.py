@@ -16,6 +16,7 @@ def extract_equation(operand1, operator, operand2):
     else:
         return None
 
+
 class Riddle:
     def __init__(self, question, answer):
         self.question = question
