@@ -1,3 +1,4 @@
+1 + 1: 2
 What has keys but can't open locks?: Piano
 What runs but never walks?: River
 What has a heart that doesn't beat?: Artichoke

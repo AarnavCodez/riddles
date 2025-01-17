@@ -1,63 +1,58 @@
-import RiddleGame
-import re
+import random
 
-
-
-def levenshtein_distance(str1, str2):
-  """Calculates the Levenshtein distance between two strings.
-
-  Args:
-    str1: The first string.
-    str2: The second string.
-
-  Returns:
-    The Levenshtein distance between the two strings.
-  """
-
-  riddle_file = "riddles.txt"
-  r = RiddleGame.RiddleGame(riddle_file)
-  m = len(str1)
-  n = len(r.answer)
-
-  # Create a matrix to store the distances
-  dp = [[0] * (n + 1) for _ in range(m + 1)]
-
-  # Fill the first row and column
-  for i in range(m + 1):
-    dp[i][0] = i
-  for j in range(n + 1):
-    dp[0][j] = j
-
-  # Fill the rest of the matrix
-  for i in range(1, m + 1):
-    for j in range(1, n + 1):
-      if str1[i - 1] == str2[j - 1]:
-        cost = 0
-      else:
-        cost = 1
-      dp[i][j] = min(dp[i - 1][j] + 1,  # deletion
-                     dp[i][j - 1] + 1,  # insertion
-                     dp[i - 1][j - 1] + cost)  # substitution
-
-  return dp[m][n]
-
+def extract_equation(operand1, operator, operand2):
+    if operator == "+":
+        return operand1 + operand2
+    elif operator == "-":
+        return operand1 - operand2
+    elif operator == "*":
+        return operand1 * operand2
+    elif operator == "/":
+        return operand1 / operand2
+    elif operator == "**":
+        return operand1 ** operand2
+    elif operator == "%":
+        return operand1 % operand2
+    else:
+        return None
 
 class Riddle:
     def __init__(self, question, answer):
         self.question = question
         self.answer = answer
-    def check_answer(self, guess):
-        a = re.compile(rf"{self.answer.lower()}")
-        str(a)
-        ld = levenshtein_distance(guess, a)
-        print(f"ld")
-        return a.search(guess.lower())
 
+    def get_question(self):
+        """Return the riddle question."""
+        return self.question
+
+    def check_answer(self, guess):
+        """Check the user's answer for the riddle."""
+        return guess.strip().lower() == self.answer.strip().lower()
 
 class Math:
     def __init__(self, expression, solution):
         self.expression = expression
         self.solution = solution
 
-    def check_solution(self, guess):
-        pass
+    def get_question(self):
+        """Return the math expression as a question."""
+        return self.expression
+
+    def check_answer(self, guess):
+        """Check if the user's answer is within a tolerance of 0.01."""
+        try:
+            return abs(float(guess) - self.solution) <= 0.01
+        except ValueError:
+            return False
+
+    @staticmethod
+    def generate_problems(range_min, range_max, amount):
+        problems = []
+        for _ in range(amount):
+            operand1 = random.randint(range_min, range_max)
+            operand2 = random.randint(range_min, range_max)
+            operator = random.choice(['+', '-', '*', '/'])
+            expression = f"{operand1} {operator} {operand2}"
+            solution = extract_equation(operand1, operator, operand2)
+            problems.append(Math(expression, solution))
+        return problems
